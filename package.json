@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend de la actividad gigante de desarrollo de apps web",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodejs app.js",
+	"dev": "nodemon app.js"
+  },
+  "keywords": [
+    "REST",
+    "RESTFUL"
+  ],
+  "author": "Ernesto Vera",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
