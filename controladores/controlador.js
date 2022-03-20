@@ -1,51 +1,53 @@
-// Importar los modelos de los datos persisntes.
-propiedades = require("../modelos/data")
-// Importar las clases con las que se construyen los datos.
-Propiedades = require("./propiedad")
-// Terminar de importar las clases.
-Propiedad = Propiedades.Propiedad;
-Propietario = Propiedades.Propietario;
-propiedades = propiedades.datos;
-propietarios = [];
-propietarios.push(new Propietario("J142", "Juan", false))
-propietarios.push(new Propietario("fa1g2", "Francisca", true))
-propietarios.push(new Propietario("S25G", "Sebastian", true))
-function getAllArrendarios() {
-	return propietarios.filter(propietarios => propietarios.esArrendador);
+control = require("../modelos/acceso.js")
+function getPropiedad(req, res) {
+	if(req.query.claveCatastral != null) {
+		p1 = control.getPropiedad(req.query.claveCatastral);
+		res.send(p1);
+	}
+	else {
+		p1 = control.getAllPropiedades();
+		res.send(p1);
+	}
 }
-
-function getAllPropietarios() {
-	return propietarios;
+function getArrendatarios(req, res) {
+	if(req.query.RFC != null) {
+		console.log(req.query.RFC)
+		arrendarios = control.getArrendario(req.query.RFC);
+		res.send(arrendarios);
+	}
+	else {
+		arrendarios = control.getAllArrendarios();
+		res.send(arrendarios);
+	}
 }
-
-function getAllPropiedades() {
-	return propiedades;
+function getPropietarios(req, res) {
+	if(req.query.RFC != null) {
+		resPropietarios = control.getPropietario(req.query.RFC);
+		res.send(resPropietarios);
+	}
+	else {
+		resPropietarios= control.getAllPropietarios();
+		res.send(resPropietarios);
+	}
 }
-
-function getPropiedad(claveCatastral) {
-	return propiedades.filter(propiedad => propiedad.claveCatastral == claveCatastral);
+function crearPropietario(req, res) {
+	let b = req.body;
+	if(b.RFC == undefined || b.nombre == undefined || b.esArrendador == undefined) {
+		return res.status(400).json({"Error" : "No existen esos atributos"})
+	}
+	r = control.crearPropietario(b.RFC, b.nombre, b.esArrendador);
+	if(r > 0) return res.status(200).json({"OK": "Sujeto agregado"})
 }
-
-function getArrendario(RFC) {
-	return propietarios.filter(propietario => propietario.RFC == RFC && propietario.esArrendador);
+function crearPropiedad(req, res) {
+	let b = req.body;
+	if(b.claveCatastral == undefined || b.descripcion == undefined || b.propietarios == undefined) {
+		return res.status(400).json({"Error" : "No existen esos atributos"})
+	}
+	r = control.crearPropiedad(b.claveCatastral, b.descripcion, b.propietarios);
+	if(r > 0) return res.status(200).json({"OK": "Propiedad agregada"})
 }
-
-function getPropietario(RFC) {
-	return propietarios.filter(propietario => propietario.RFC == RFC);
-}
-
-function crearPropietario(RFC, nombre, esArrendario) {
-	return propietarios.push(new Propietario(RFC, nombre, esArrendario))
-}
-
-function crearPropiedad(claveCatastral, descripcion, propietarios) {
-	return propiedades.push(new Propiedad(claveCatastral, descripcion, propietarios))
-}
-module.exports.getAllArrendarios = getAllArrendarios;
-module.exports.getAllPropietarios = getAllPropietarios;
-module.exports.getAllPropiedades = getAllPropiedades;
-module.exports.getPropiedad = getPropiedad;
-module.exports.getArrendario = getArrendario;
-module.exports.getPropietario = getPropietario;
 module.exports.crearPropietario = crearPropietario;
-module.exports.crearPropiedad = crearPropiedad; 
+module.exports.crearPropiedad= crearPropiedad;
+module.exports.getArrendatarios = getArrendatarios;
+module.exports.getPropiedad = getPropiedad;
+module.exports.getPropietarios = getPropietarios;
