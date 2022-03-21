@@ -1,12 +1,10 @@
 // Importar las clases con las que se construyen los datos.
-clases = require("./modelos");
-const propiedades = [
+const Propietario = require("./Propietario").Propietario;
+const Propiedad = require("./Propiedad").Propiedad;
+propiedades = [
 	{ claveCatastral: "LM-20-102", descripcion: "casa grandota", propietarios: []},
 	{ claveCatastral: "XA-03-008", descripcion: "casa chiquita", propietarios: []}
 ];
-// Terminar de importar las clases.
-Propietario = clases.Propietario;
-Propiedad = clases.Propiedad;
 propietarios = [];
 propietarios.push(new Propietario("J142", "Juan", false));
 propietarios.push(new Propietario("FA1G2", "Francisca", true));
@@ -27,7 +25,7 @@ function getArrendario(RFC) {
 	return propietarios.filter(propietario => propietario.RFC == RFC && propietario.esArrendador);
 }
 function getPropietario(RFC) {
-	return propietarios.filter(propietario => propietario.rfc == rfc);
+	return propietarios.filter(propietario => propietario.RFC == RFC);
 }
 function crearPropietario(RFC, nombre, esArrendario) {
 	return propietarios.push(new Propietario(RFC, nombre, esArrendario))
@@ -36,19 +34,35 @@ function crearPropiedad(claveCatastral, descripcion, propietarios) {
 	return propiedades.push(new Propiedad(claveCatastral, descripcion, propietarios));
 }
 function putPropiedad(claveCatastral, propiedad) {
-	
+	let og = propiedades.length;
+	propiedades = propiedades.filter((propiedad) => propiedad.claveCatastral != claveCatastral);
+	if(og == propiedades.length) {
+		return -1;
+	}
+	propiedades.push(propiedad);
+	return 0;
 }
 function patchPropiedad(claveCatastral, propiedad) {
 
 }
 function deletePropiedad(claveCatastral) {
-
+	eliminado = propiedades.filter(propiedad => propiedad.claveCatastral == claveCatastral);
+	propiedades = propiedades.filter((propiedad) => propiedad.claveCatastral != claveCatastral);
+	return eliminado;
 }
 function deletePropietario(RFC) {
-
+	eliminado = propietarios.filter(propietario => propietario.RFC == RFC);
+	propietarios = propietarios.filter(propietario => propietario.RFC != RFC);
+	return eliminado;
 }
 function putPropietario(RFC, propietario) {
-	
+	let og = propietarios.length;
+	propietarios = propietarios.filter((propietario) => propietario.RFC != RFC);
+	if(og == propietarios.length) {
+		return -1;
+	}
+	propietarios.push(propietario);
+	return 0;
 }
 function patchPropietario(RFC, propietario) {
 

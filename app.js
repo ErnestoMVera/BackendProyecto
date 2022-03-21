@@ -1,9 +1,10 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+const cors = require('cors');
 const control = require("./controladores/controlador");
 const app = express();
 const port = 3000;
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(cors());
 app.get('/', (req, res) => {	
 	res.send("BIENVENIDO A MI BAKEN");
 });
@@ -15,6 +16,10 @@ app.post('/', (req, res) => {
 });
 app.post('/propietarios', (req, res) => control.crearPropietario(req, res));
 app.post('/propiedades', (req, res) => control.crearPropiedad(req, res));
+app.delete('/propiedades', (req, res) => control.deletePropiedad(req, res));
+app.delete('/propietarios', (req, res) => control.deletePropietario(req, res));
+app.put('/propiedades', (req, res) => control.putPropiedad(req, res));
+app.put('/propietarios', (req, res) => control.putPropietario(req, res));
 app.listen(port, () => {
 	console.log("Servidor iniciado");
 });

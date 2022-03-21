@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "nodejs app.js",
-	"dev": "nodemon app.js"
+    "dev": "nodemon app.js"
   },
   "keywords": [
     "REST",
@@ -14,6 +14,7 @@
   "author": "Ernesto Vera",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.3"
   }
 }
