@@ -73,7 +73,6 @@ function deletePropiedad(req, res) {
 }
 function deletePropietario(req, res) {
 	if(req.query.RFC != null) {
-		console.log(req.query.RFC)
 		resPropietarios = control.deletePropietario(req.query.RFC);
 		res.send(resPropietarios);
 	}
