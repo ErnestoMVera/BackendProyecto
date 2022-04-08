@@ -1,39 +1,37 @@
 // Importar las clases con las que se construyen los datos.
+const models = require('../models');
 const Propietario = require("./Propietario").Propietario;
 const Propiedad = require("./Propiedad").Propiedad;
-propiedades = [
-	{ claveCatastral: "LM-20-102", descripcion: "casa grandota", propietarios: []},
-	{ claveCatastral: "XA-03-008", descripcion: "casa chiquita", propietarios: []}
-];
-propietarios = [];
-propietarios.push(new Propietario("J142", "Juan", false));
-propietarios.push(new Propietario("FA1G2", "Francisca", true));
-propietarios.push(new Propietario("S25G", "Sebastian", true));
-function getAllArrendarios() {
-	return propietarios.filter(propietarios => propietarios.esArrendador);
+raw = {raw:true} // JSON que hace que me regrese el objeto JSON solo de los datos
+async function getAllArrendatarios() {
+	let consulta = await models.Propietarios.findAll(raw);
+	console.log(consulta);
+	return consulta;//consulta.filter(propietarios => propietarios.esArrendador);
 }
-function getAllPropietarios() {
-	return propietarios;
+async function getAllPropietarios() {
+	let consulta = await models.Propietarios.findAll(raw);
+	console.log(consulta)
+	return consulta;
 }
-function getAllPropiedades() {
-	return propiedades;
+async function getAllPropiedades() {
+	return await models.Propiedades.findAll();
 }
-function getPropiedad(claveCatastral) {
+async function getPropiedad(claveCatastral) {
 	return propiedades.filter(propiedad => propiedad.claveCatastral == claveCatastral);
 }
-function getArrendario(RFC) {
+async function getArrendatario(RFC) {
 	return propietarios.filter(propietario => propietario.RFC == RFC && propietario.esArrendador);
 }
-function getPropietario(RFC) {
+async function getPropietario(RFC) {
 	return propietarios.filter(propietario => propietario.RFC == RFC);
 }
-function crearPropietario(RFC, nombre, esArrendario) {
+async function crearPropietario(RFC, nombre, esArrendario) {
 	return propietarios.push(new Propietario(RFC, nombre, esArrendario))
 }
-function crearPropiedad(claveCatastral, descripcion, propietarios) {
+async function crearPropiedad(claveCatastral, descripcion, propietarios) {
 	return propiedades.push(new Propiedad(claveCatastral, descripcion, propietarios));
 }
-function putPropiedad(claveCatastral, propiedad) {
+async function putPropiedad(claveCatastral, propiedad) {
 	let og = propiedades.length;
 	propiedades = propiedades.filter((propiedad) => propiedad.claveCatastral != claveCatastral);
 	if(og == propiedades.length) {
@@ -42,20 +40,20 @@ function putPropiedad(claveCatastral, propiedad) {
 	propiedades.push(propiedad);
 	return 0;
 }
-function patchPropiedad(claveCatastral, propiedad) {
+async function patchPropiedad(claveCatastral, propiedad) {
 
 }
-function deletePropiedad(claveCatastral) {
+async function deletePropiedad(claveCatastral) {
 	eliminado = propiedades.filter(propiedad => propiedad.claveCatastral == claveCatastral);
 	propiedades = propiedades.filter((propiedad) => propiedad.claveCatastral != claveCatastral);
 	return eliminado;
 }
-function deletePropietario(RFC) {
+async function deletePropietario(RFC) {
 	eliminado = propietarios.filter(propietario => propietario.RFC == RFC);
 	propietarios = propietarios.filter(propietario => propietario.RFC != RFC);
 	return eliminado;
 }
-function putPropietario(RFC, propietario) {
+async function putPropietario(RFC, propietario) {
 	let og = propietarios.length;
 	propietarios = propietarios.filter((propietario) => propietario.RFC != RFC);
 	if(og == propietarios.length) {
@@ -64,14 +62,14 @@ function putPropietario(RFC, propietario) {
 	propietarios.push(propietario);
 	return 0;
 }
-function patchPropietario(RFC, propietario) {
+async function patchPropietario(RFC, propietario) {
 
 }
-module.exports.getAllArrendarios = getAllArrendarios;
+module.exports.getAllArrendatarios = getAllArrendatarios;
 module.exports.getAllPropietarios = getAllPropietarios;
 module.exports.getAllPropiedades = getAllPropiedades;
 module.exports.getPropiedad = getPropiedad;
-module.exports.getArrendario = getArrendario;
+module.exports.getArrendatario = getArrendatario;
 module.exports.getPropietario = getPropietario;
 module.exports.crearPropietario = crearPropietario;
 module.exports.putPropiedad = putPropiedad; 

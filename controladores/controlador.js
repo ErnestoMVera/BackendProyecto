@@ -1,22 +1,22 @@
 control = require("../modelos/acceso.js")
-function getPropiedad(req, res) {
+async function getPropiedad(req, res) {
 	if(req.query.claveCatastral != null) {
-		p1 = control.getPropiedad(req.query.claveCatastral);
+		p1 = await control.getPropiedad(req.query.claveCatastral);
 		res.send(p1);
 	}
 	else {
-		p1 = control.getAllPropiedades();
+		p1 = await control.getAllPropiedades();
 		res.send(p1);
 	}
 }
-function getArrendatarios(req, res) {
+async function getArrendatarios(req, res) {
 	if(req.query.RFC != null) {
-		arrendarios = control.getArrendario(req.query.RFC);
-		res.send(arrendarios);
+		let arrendatarios = await control.getArrendatario(req.query.RFC);
+		res.send(arrendatarios);
 	}
 	else {
-		arrendarios = control.getAllArrendarios();
-		res.send(arrendarios);
+		let arrendatarios = await control.getAllArrendatarios();
+		res.send(arrendatarios);
 	}
 }
 function getPropietarios(req, res) {
