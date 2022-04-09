@@ -10,14 +10,21 @@ async function getAllArrendatarios() {
 }
 async function getAllPropietarios() {
 	let consulta = await models.Propietarios.findAll(raw);
-	console.log(consulta)
+	console.log(consulta);
 	return consulta;
 }
 async function getAllPropiedades() {
 	return await models.Propiedades.findAll();
 }
 async function getPropiedad(claveCatastral) {
-	return propiedades.filter(propiedad => propiedad.claveCatastral == claveCatastral);
+	let consulta =  await models.Propiedades.findAll({
+		raw: true,
+		where: {
+			claveCatastral: claveCatastral
+		}
+	});
+	return consulta;
+	//return propiedades.filter(propiedad => propiedad.claveCatastral == claveCatastral);
 }
 async function getArrendatario(RFC) {
 	return propietarios.filter(propietario => propietario.RFC == RFC && propietario.esArrendador);

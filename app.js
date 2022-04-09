@@ -12,7 +12,6 @@ app.use(propiedades_route);
 app.use(propietarios_route);
 app.use(arrendatarios_route);
 app.get('/', (req, res) => {
-	process.env['HOSTNAME'] = req.protocol + "://"+ req.get('host') + req.originalUrl; // me da el url del servidor
 	res.send("BIENVENIDO A MI BAKEN");
 	
 });

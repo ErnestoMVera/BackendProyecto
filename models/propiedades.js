@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: "casa"
     },
     createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
+    updatedAt: DataTypes.DATE,
+    url: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Propiedades',

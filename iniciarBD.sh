@@ -1,2 +1,2 @@
 npx sequelize-cli db:migrate
-npx sequelize-cli dbseed:all
+npx sequelize-cli db:seed:all

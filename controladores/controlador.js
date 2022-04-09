@@ -1,13 +1,12 @@
 control = require("../modelos/acceso.js")
 async function getPropiedad(req, res) {
-	if(req.query.claveCatastral != null) {
-		p1 = await control.getPropiedad(req.query.claveCatastral);
+	if(req.params.claveCatastral != undefined) {
+		p1 = await control.getPropiedad(req.params.claveCatastral);
 		res.send(p1);
+		return;
 	}
-	else {
-		p1 = await control.getAllPropiedades();
-		res.send(p1);
-	}
+	p1 = await control.getAllPropiedades();
+	res.send(p1);
 }
 async function getArrendatarios(req, res) {
 	if(req.query.RFC != null) {

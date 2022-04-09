@@ -25,6 +25,9 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      url: {
+	type: Sequelize.STRING
       }
     });
   },
