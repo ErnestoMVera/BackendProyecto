@@ -10,7 +10,7 @@ module.exports = {
 	esArrendatario: false,
 	createdAt: new Date(),
 	updatedAt: new Date(),
-	url: host + "FJ142"
+	url: host + "propietarios/J142"
      },
      {
 	RFC: "FA1G2",
@@ -18,7 +18,7 @@ module.exports = {
 	esArrendatario: true,
 	createdAt: new Date(),
 	updatedAt: new Date(),
-	url: host + "FA1G2"
+	url: host + "propietarios/" + "FA1G2"
      },
      {
 	RFC: "S25G",
@@ -26,7 +26,7 @@ module.exports = {
 	esArrendatario: true,
 	createdAt: new Date(),
 	updatedAt: new Date(),
-	url: host + "S25G"
+	url: host + "propietarios/S25G"
      }
      ], {});
   },

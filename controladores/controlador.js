@@ -9,9 +9,10 @@ async function getPropiedad(req, res) {
 	res.send(p1);
 }
 async function getArrendatarios(req, res) {
-	if(req.query.RFC != undefined) {
-		let arrendatarios = await control.getArrendatario(req.query.RFC);
+	if(req.params.RFC != undefined) {
+		let arrendatarios = await control.getArrendatario(req.params.RFC);
 		res.send(arrendatarios);
+		return;
 	}
 	let arrendatarios = await control.getAllArrendatarios();
 	res.send(arrendatarios);

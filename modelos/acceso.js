@@ -4,17 +4,20 @@ const Propietario = require("./Propietario").Propietario;
 const Propiedad = require("./Propiedad").Propiedad;
 raw = {raw:true} // JSON que hace que me regrese el objeto JSON solo de los datos
 async function getAllArrendatarios() {
-	let consulta = await models.Propietarios.findAll(raw);
-	console.log(consulta);
-	return consulta;//consulta.filter(propietarios => propietarios.esArrendador);
+	let consulta =  await models.Propietarios.findAll({
+		raw: true,
+		where: {
+			esArrendatario: 1
+		}
+	});
+	return consulta;
 }
 async function getAllPropietarios() {
 	let consulta = await models.Propietarios.findAll(raw);
-	console.log(consulta);
 	return consulta;
 }
 async function getAllPropiedades() {
-	return await models.Propiedades.findAll();
+	return await models.Propiedades.findAll(raw);
 }
 async function getPropiedad(claveCatastral) {
 	let consulta =  await models.Propiedades.findAll({
@@ -24,10 +27,17 @@ async function getPropiedad(claveCatastral) {
 		}
 	});
 	return consulta;
-	//return propiedades.filter(propiedad => propiedad.claveCatastral == claveCatastral);
 }
 async function getArrendatario(RFC) {
-	return propietarios.filter(propietario => propietario.RFC == RFC && propietario.esArrendador);
+	let consulta =  await models.Propietarios.findAll({
+		raw: true,
+		where: {
+			esArrendatario: 1,
+			RFC: RFC
+		}
+	});
+	console.log(consulta)
+	return consulta;
 }
 async function getPropietario(RFC) {
 	let consulta =  await models.Propietarios.findAll({
