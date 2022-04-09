@@ -9,24 +9,21 @@ async function getPropiedad(req, res) {
 	res.send(p1);
 }
 async function getArrendatarios(req, res) {
-	if(req.query.RFC != null) {
+	if(req.query.RFC != undefined) {
 		let arrendatarios = await control.getArrendatario(req.query.RFC);
 		res.send(arrendatarios);
 	}
-	else {
-		let arrendatarios = await control.getAllArrendatarios();
-		res.send(arrendatarios);
-	}
+	let arrendatarios = await control.getAllArrendatarios();
+	res.send(arrendatarios);
 }
-function getPropietarios(req, res) {
-	if(req.query.RFC != null) {
-		resPropietarios = control.getPropietario(req.query.RFC);
+async function getPropietarios(req, res) {
+	if(req.params.RFC != undefined) {
+		resPropietarios = await control.getPropietario(req.params.RFC);
 		res.send(resPropietarios);
+		return;
 	}
-	else {
-		resPropietarios= control.getAllPropietarios();
-		res.send(resPropietarios);
-	}
+	resPropietarios = await control.getAllPropietarios();
+	res.send(resPropietarios);
 }
 function crearPropietario(req, res) {
 	let b = req.body;

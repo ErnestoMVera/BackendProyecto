@@ -1,3 +1,4 @@
+const {host} = require('../config.js');
 'use strict';
 
 module.exports = {
@@ -8,21 +9,24 @@ module.exports = {
 	nombre: "Juan",
 	esArrendatario: false,
 	createdAt: new Date(),
-	updatedAt: new Date()	
+	updatedAt: new Date(),
+	url: host + "FJ142"
      },
      {
 	RFC: "FA1G2",
 	nombre: "Francisca",
 	esArrendatario: true,
 	createdAt: new Date(),
-	updatedAt: new Date()
+	updatedAt: new Date(),
+	url: host + "FA1G2"
      },
      {
 	RFC: "S25G",
 	nombre: "Sebastian",
 	esArrendatario: true,
 	createdAt: new Date(),
-	updatedAt: new Date()
+	updatedAt: new Date(),
+	url: host + "S25G"
      }
      ], {});
   },

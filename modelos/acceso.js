@@ -30,7 +30,13 @@ async function getArrendatario(RFC) {
 	return propietarios.filter(propietario => propietario.RFC == RFC && propietario.esArrendador);
 }
 async function getPropietario(RFC) {
-	return propietarios.filter(propietario => propietario.RFC == RFC);
+	let consulta =  await models.Propietarios.findAll({
+		raw: true,
+		where: {
+			RFC: RFC 
+		}
+	});
+	return consulta;
 }
 async function crearPropietario(RFC, nombre, esArrendario) {
 	return propietarios.push(new Propietario(RFC, nombre, esArrendario))
