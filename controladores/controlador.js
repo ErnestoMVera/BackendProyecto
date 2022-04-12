@@ -26,23 +26,23 @@ async function getPropietarios(req, res) {
 	resPropietarios = await control.getAllPropietarios();
 	res.send(resPropietarios);
 }
-function crearPropietario(req, res) {
+async function crearPropietario(req, res) {
 	let b = req.body;
-	if(b.RFC == undefined || b.nombre == undefined || b.esArrendador == undefined) {
+	if(b.RFC == undefined || b.nombre == undefined || b.esArrendatario == undefined) {
 		return res.status(400).json({"Error" : "No existen esos atributos"});
 	}
-	r = control.crearPropietario(b.RFC, b.nombre, b.esArrendador);
-	if(r > 0) return res.status(200).json({"OK": "Sujeto agregado"});
+	r = await control.crearPropietario(b.RFC, b.nombre, b.esArrendatario);
+	if(r != null) return res.status(200).json(r);
 }
-function crearPropiedad(req, res) {
+async function crearPropiedad(req, res) {
 	let b = req.body;
 	if(b.claveCatastral == undefined || b.descripcion == undefined || b.propietarios == undefined) {
 		return res.status(400).json({"Error" : "No existen esos atributos"});
 	}
-	r = control.crearPropiedad(b.claveCatastral, b.descripcion, b.propietarios);
-	if(r > 0) return res.status(200).json({"OK": "Propiedad agregada"});
+	r = await control.crearPropiedad(b.claveCatastral, b.descripcion, b.propietarios);
+	if(r != null) return res.status(200).json(r);
 }
-function putPropiedad(req, res) {
+async function putPropiedad(req, res) {
 	let b = req.body;
 	if(b.claveCatastral == undefined || b.descripcion == undefined || b.propietarios == undefined) {
 		return res.status(400).json({"Error" : "No existen esos atributos"});
@@ -50,7 +50,7 @@ function putPropiedad(req, res) {
 	r = control.putPropiedad(b.claveCatastral, b);
 	if(r != -1) return res.status(200).json({"OK": "Modificado"});
 }
-function putPropietario(req, res) {
+async function putPropietario(req, res) {
 	let b = req.body;
 	if(b.RFC == undefined || b.nombre == undefined || b.esArrendador == undefined) {
 		return res.status(400).json({"Error" : "No existen esos atributos"});
@@ -58,7 +58,7 @@ function putPropietario(req, res) {
 	r = control.putPropietario(b.RFC, b);
 	if(r != -1) return res.status(200).json({"OK": "Modificado"});
 }
-function deletePropiedad(req, res) {
+async function deletePropiedad(req, res) {
 	if(req.query.claveCatastral != null) {
 		p1 = control.deletePropiedad(req.query.claveCatastral);
 		res.send(p1);
@@ -68,7 +68,7 @@ function deletePropiedad(req, res) {
 		res.send(p1);
 	}
 }
-function deletePropietario(req, res) {
+async function deletePropietario(req, res) {
 	if(req.query.RFC != null) {
 		resPropietarios = control.deletePropietario(req.query.RFC);
 		res.send(resPropietarios);

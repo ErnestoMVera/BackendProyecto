@@ -2,57 +2,129 @@
 const models = require('../models');
 const Propietario = require("./Propietario").Propietario;
 const Propiedad = require("./Propiedad").Propiedad;
+const {host} = require('../config')
 raw = {raw:true} // JSON que hace que me regrese el objeto JSON solo de los datos
 async function getAllArrendatarios() {
 	let consulta =  await models.Propietarios.findAll({
-		raw: true,
 		where: {
 			esArrendatario: 1
 		}
 	});
+	consulta = await Promise.all(
+		consulta.map(async (propietario) => {
+			let propiedades = await propietario.getPropiedades(raw);
+			propiedades = propiedades.map((p) => p.url);
+			propietario.dataValues['Propiedades'] = propiedades;
+			return propietario;
+		})
+	);
 	return consulta;
 }
 async function getAllPropietarios() {
-	let consulta = await models.Propietarios.findAll(raw);
+	let consulta = await models.Propietarios.findAll();
+	consulta = await Promise.all(
+		consulta.map(async (propietario) => {
+			let propiedades = await propietario.getPropiedades(raw);
+			propiedades = propiedades.map((p) => p.url);
+			propietario.dataValues['Propiedades'] = propiedades;
+			return propietario;
+		})
+	);
 	return consulta;
 }
 async function getAllPropiedades() {
-	return await models.Propiedades.findAll(raw);
+	let propiedades = await models.Propiedades.findAll();
+	propiedades = await Promise.all(
+		propiedades.map(async (propiedad) => {
+			let propietarios = await propiedad.getPropietarios(raw);
+			propietarios = propietarios.map((p) => p.url);
+			propiedad.dataValues['Propietarios'] = propietarios;
+			return propiedad;
+		})
+	);
+	return propiedades;
 }
 async function getPropiedad(claveCatastral) {
 	let consulta =  await models.Propiedades.findAll({
-		raw: true,
 		where: {
 			claveCatastral: claveCatastral
 		}
 	});
+	consulta = await Promise.all(
+		consulta.map(async (propiedad) => {
+			let propietarios = await propiedad.getPropietarios(raw);
+			propietarios = propietarios.map((p) => p.url);
+			propiedad.dataValues['Propietarios'] = propietarios;
+			return propiedad;
+		})
+	);
 	return consulta;
 }
 async function getArrendatario(RFC) {
 	let consulta =  await models.Propietarios.findAll({
-		raw: true,
 		where: {
 			esArrendatario: 1,
 			RFC: RFC
 		}
 	});
-	console.log(consulta)
+	consulta = await Promise.all(
+		consulta.map(async (propietario) => {
+			let propiedades = await propietario.getPropiedades(raw);
+			propiedades = propiedades.map((p) => p.url);
+			propietario.dataValues['Propiedades'] = propiedades;
+			return propietario;
+		})
+	);
 	return consulta;
 }
 async function getPropietario(RFC) {
 	let consulta =  await models.Propietarios.findAll({
-		raw: true,
 		where: {
 			RFC: RFC 
 		}
 	});
+	consulta = await Promise.all(
+		consulta.map(async (propietario) => {
+			let propiedades = await propietario.getPropiedades(raw);
+			propiedades = propiedades.map((p) => p.url);
+			propietario.dataValues['Propiedades'] = propiedades;
+			return propietario;
+		})
+	);
 	return consulta;
 }
-async function crearPropietario(RFC, nombre, esArrendario) {
-	return propietarios.push(new Propietario(RFC, nombre, esArrendario))
+async function crearPropietario(RFC, nombre, esArrendatario) {
+	let creado = await models.Propietarios.create({
+		RFC: RFC,
+		nombre: nombre,
+		esArrendatario: esArrendatario,
+		createdAt: new Date(),
+		updatedAt: new Date(),
+		url: host + "propietarios/" + RFC
+	});
+	return creado.toJSON();
 }
 async function crearPropiedad(claveCatastral, descripcion, propietarios) {
-	return propiedades.push(new Propiedad(claveCatastral, descripcion, propietarios));
+	let creado = await models.Propiedades.create({
+		claveCatastral: claveCatastral,
+		descripcion: descripcion,
+		createdAt: new Date(),
+		updatedAt: new Date(),
+		url: host + "propiedades/" + claveCatastral
+	});
+	if(propietarios.length > 0) {
+		creados = await Promise.all(
+			propietarios.map(async (propietario) => {
+				let consulta = await models.Propietarios.findAll({
+					where: {
+						RFC: propietario.RFC 
+					}
+				});
+				return await creado.addPropietarios(consulta);
+			})
+		);
+	}
+	return creado.toJSON();
 }
 async function putPropiedad(claveCatastral, propiedad) {
 	let og = propiedades.length;

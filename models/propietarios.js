@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     esArrendatario: DataTypes.BOOLEAN,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
-    url: DataTypes.DATE
+    url: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Propietarios',
