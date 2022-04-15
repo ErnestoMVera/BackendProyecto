@@ -127,38 +127,58 @@ async function crearPropiedad(claveCatastral, descripcion, propietarios) {
 	return creado.toJSON();
 }
 async function putPropiedad(claveCatastral, propiedad) {
-	let og = propiedades.length;
-	propiedades = propiedades.filter((propiedad) => propiedad.claveCatastral != claveCatastral);
-	if(og == propiedades.length) {
+	let estado = await deletePropiedad(claveCatastral);
+	if(estado == 0) {
 		return -1;
 	}
-	propiedades.push(propiedad);
-	return 0;
+	return await crearPropiedad(propiedad.claveCatastral, propiedad.descripcion, propiedad.propietarios);
+	
 }
 async function patchPropiedad(claveCatastral, propiedad) {
-
 }
 async function deletePropiedad(claveCatastral) {
-	eliminado = propiedades.filter(propiedad => propiedad.claveCatastral == claveCatastral);
-	propiedades = propiedades.filter((propiedad) => propiedad.claveCatastral != claveCatastral);
+	eliminado = await models.Propiedades.destroy({
+		where: {
+			claveCatastral: claveCatastral
+		}
+	})
 	return eliminado;
 }
 async function deletePropietario(RFC) {
-	eliminado = propietarios.filter(propietario => propietario.RFC == RFC);
-	propietarios = propietarios.filter(propietario => propietario.RFC != RFC);
+	eliminado = await models.Propietarios.destroy({
+		where: {
+			RFC: RFC 
+		}
+	})
 	return eliminado;
 }
 async function putPropietario(RFC, propietario) {
-	let og = propietarios.length;
-	propietarios = propietarios.filter((propietario) => propietario.RFC != RFC);
-	if(og == propietarios.length) {
+	estado = await deletePropietario(RFC);
+	if(estado == 0) {
 		return -1;
-	}
-	propietarios.push(propietario);
-	return 0;
+	} 
+	return await crearPropietario(propietario.RFC, propietario.nombre, propietario.esArrendatario);
 }
 async function patchPropietario(RFC, propietario) {
 
+}
+async function deleteAllPropietarios() {
+	eliminado = await models.Propietarios.destroy({
+		where: {},
+		truncate: {
+			cascade: true
+		}
+	});
+	return eliminado;
+}
+async function deleteAllPropiedades() {
+	eliminado = await models.Propiedades.destroy({
+		where: {},
+		truncate: {
+			cascade: true
+		}
+	});
+	return eliminado;
 }
 module.exports.getAllArrendatarios = getAllArrendatarios;
 module.exports.getAllPropietarios = getAllPropietarios;
@@ -174,3 +194,5 @@ module.exports.deletePropiedad = deletePropiedad;
 module.exports.deletePropietario = deletePropietario; 
 module.exports.putPropietario = putPropietario; 
 module.exports.patchPropietario = patchPropietario; 
+module.exports.deleteAllPropiedades = deleteAllPropiedades;
+module.exports.deleteAllPropietarios = deleteAllPropietarios; 

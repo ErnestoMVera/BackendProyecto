@@ -47,35 +47,42 @@ async function putPropiedad(req, res) {
 	if(b.claveCatastral == undefined || b.descripcion == undefined || b.propietarios == undefined) {
 		return res.status(400).json({"Error" : "No existen esos atributos"});
 	}
-	r = control.putPropiedad(b.claveCatastral, b);
+	r = await control.putPropiedad(req.params.claveCatastral, b);
 	if(r != -1) return res.status(200).json({"OK": "Modificado"});
+	else return res.status(400).json({"Error" : "Algo feo ocurrio"});
 }
 async function putPropietario(req, res) {
 	let b = req.body;
-	if(b.RFC == undefined || b.nombre == undefined || b.esArrendador == undefined) {
+	if(b.RFC == undefined || b.nombre == undefined || b.esArrendatario == undefined) {
 		return res.status(400).json({"Error" : "No existen esos atributos"});
 	}
-	r = control.putPropietario(b.RFC, b);
+	r = await control.putPropietario(req.params.RFC, b);
 	if(r != -1) return res.status(200).json({"OK": "Modificado"});
+	else return res.status(400).json({"Error" : "Algo feo ocurrio"});
 }
 async function deletePropiedad(req, res) {
-	if(req.query.claveCatastral != null) {
-		p1 = control.deletePropiedad(req.query.claveCatastral);
-		res.send(p1);
+	if(req.params.claveCatastral != null) {
+		p1 = await control.deletePropiedad(req.params.claveCatastral);
+		if(p1 == 1) res.status(200).json({"OK": "Eliminado"});
+		else res.status(201).json({"Error":"no pudo ser eliminado"})
 	}
 	else {
-		p1 = control.getAllPropiedades();
-		res.send(p1);
+		p1 = await control.deleteAllPropiedades();
+		console.log(p1);
+		if(p1 > 0) res.status(200).json({"OK": "Eliminado"});
+		else res.status(201).json({"Error":"no pudo ser eliminado"})
 	}
 }
 async function deletePropietario(req, res) {
-	if(req.query.RFC != null) {
-		resPropietarios = control.deletePropietario(req.query.RFC);
-		res.send(resPropietarios);
+	if(req.params.RFC != null) {
+		resPropietarios = await control.deletePropietario(req.params.RFC);
+		if(resPropietarios == 1) res.status(200).json({"OK": "Eliminado"});
+		else res.status(201).json({"Error":"no pudo ser eliminado"})
 	}
 	else {
-		resPropietarios= control.getAllPropietarios();
-		res.send(resPropietarios);
+		resPropietarios = await control.deleteAllPropietarios();
+		if(resPropietarios > 0) res.status(200).json({"OK": "Eliminado"});
+		else res.status(201).json({"Error":"no pudo ser eliminado"})
 	}
 }
 module.exports.crearPropietario = crearPropietario;

@@ -6,28 +6,34 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+	onDelete: "cascade"
       },
       claveCatastral: {
         type: Sequelize.STRING,
         allowNull:false,
-        unique:true
+        unique:true,
+	onDelete: "cascade"
       },
       descripcion: {
         type: Sequelize.STRING,
         allowNull:false,
-        defaultValue: 0
+        defaultValue: 0,
+	onDelete: "cascade"
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+	onDelete: "cascade"
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+	onDelete: "cascade"
       },
       url: {
-	type: Sequelize.STRING
+	type: Sequelize.STRING,
+	onDelete: "cascade"
       }
     });
   },

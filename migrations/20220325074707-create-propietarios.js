@@ -6,27 +6,34 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+	onDelete: "cascade"
       },
       RFC: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+	onDelete: "cascade"
       },
       nombre: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+	onDelete: "cascade"
       },
       esArrendatario: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+	onDelete: "cascade"
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+	onDelete: "cascade"
       },
       updatedAt: {
         allowNull: false,
+	onDelete: "cascade",
         type: Sequelize.DATE
       },
       url: {
-	type: Sequelize.STRING
+	type: Sequelize.STRING,
+	onDelete: "cascade"
       }
     });
   },
