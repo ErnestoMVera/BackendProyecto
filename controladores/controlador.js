@@ -60,6 +60,18 @@ async function putPropietario(req, res) {
 	if(r != -1) return res.status(200).json({"OK": "Modificado"});
 	else return res.status(400).json({"Error" : "Algo feo ocurrio"});
 }
+async function patchPropiedad(req, res) {
+	let b = req.body;
+	r = await control.patchPropiedad(req.params.claveCatastral, b);
+	if(r != -1) return res.status(200).json({"OK": "Modificado"});
+	else return res.status(400).json({"Error" : "Algo feo ocurrio"});
+}
+async function patchPropietario(req, res) {
+	let b = req.body;
+	r = await control.patchPropietario(req.params.RFC, b);
+	if(r != -1) return res.status(200).json({"OK": "Modificado"});
+	else return res.status(400).json({"Error" : "Algo feo ocurrio"});
+}
 async function deletePropiedad(req, res) {
 	if(req.params.claveCatastral != null) {
 		p1 = await control.deletePropiedad(req.params.claveCatastral);
@@ -94,3 +106,5 @@ module.exports.putPropiedad = putPropiedad;
 module.exports.deletePropiedad = deletePropiedad;
 module.exports.putPropietario = putPropietario;
 module.exports.deletePropietario = deletePropietario;
+module.exports.patchPropiedad = patchPropiedad;
+module.exports.patchPropietario = patchPropietario;

@@ -8,4 +8,6 @@ router.delete('/propiedades/:claveCatastral', (req, res) => control.deletePropie
 router.delete('/propiedades', (req, res) => control.deletePropiedad(req, res));
 router.put('/propiedades/:claveCatastral', (req, res) => control.putPropiedad(req, res));
 router.put('/propiedades', (req, res) => control.putPropiedad(req, res));
+router.patch('/propiedades/:claveCatastral', (req, res) => control.patchPropiedad(req, res));
+router.patch('/propiedades', (req, res) => control.patchPropiedad(req, res));
 module.exports = router;

@@ -135,6 +135,32 @@ async function putPropiedad(claveCatastral, propiedad) {
 	
 }
 async function patchPropiedad(claveCatastral, propiedad) {
+	const prop = await models.Propiedades.findOne({
+		where: {
+			claveCatastral: claveCatastral,
+		}
+	});
+	if(prop != undefined || prop != null) {
+		if(propiedad.propietarios != undefined) await agregarPropietarios(prop, propiedad.propietarios);
+		prop.updatedAt = new Date();
+		a = await prop.update(propiedad);
+		await prop.save();
+		return a;
+	}
+	return -1;
+}
+async function agregarPropietarios(propiedad, propietarios) {
+	creados = await Promise.all(
+		propietarios.map(async (propietario) => {
+			let consulta = await models.Propietarios.findAll({
+				where: {
+					RFC: propietario.RFC 
+				}
+			});
+			return await propiedad.addPropietarios(consulta);
+		})
+	);
+	return propiedad.toJSON();
 }
 async function deletePropiedad(claveCatastral) {
 	eliminado = await models.Propiedades.destroy({
@@ -160,7 +186,33 @@ async function putPropietario(RFC, propietario) {
 	return await crearPropietario(propietario.RFC, propietario.nombre, propietario.esArrendatario);
 }
 async function patchPropietario(RFC, propietario) {
+	const prop = await models.Propietarios.findOne({
+		where: {
+			RFC: RFC,
+		}
+	});
+	if(prop != undefined || prop != null) {
+		if(propietario.propiedades != undefined) await agregarPropiedades(prop, propietario.propiedades);
+		prop.updatedAt = new Date();
+		a = await prop.update(propietario);
+		await prop.save();
+		return a;
+	}
+	return -1;
 
+}
+async function agregarPropiedades(propietario, propiedades) {
+	creados = await Promise.all(
+		propiedades.map(async (propiedad) => {
+			let consulta = await models.Propiedades.findAll({
+				where: {
+					claveCatastral: propiedad.claveCatastral 
+				}
+			});
+			return await propietario.addPropiedades(consulta);
+		})
+	);
+	return propietario.toJSON();
 }
 async function deleteAllPropietarios() {
 	eliminado = await models.Propietarios.destroy({
